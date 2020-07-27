@@ -10,7 +10,6 @@ function Pane(props) {
     if (props.vertical) {
       style.height = `${size}${unit}`;
     } else {
-      console.log("Setting width to: ", size);
       style.width = `${size}${unit}`;
     }
   } else {
