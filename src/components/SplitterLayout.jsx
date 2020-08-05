@@ -301,7 +301,7 @@ SplitterLayout.propTypes = {
   onDragEnd: PropTypes.func,
   onSecondaryPaneSizeChange: PropTypes.func,
   children: PropTypes.arrayOf(PropTypes.node),
-  editMode: Boolean,
+  editMode: PropTypes.bool,
 };
 
 SplitterLayout.defaultProps = {
