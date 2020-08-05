@@ -33,6 +33,7 @@ class SplitterLayout extends React.Component {
     this.state = {
       secondaryPaneSize: 0,
       resizing: false,
+      savedSize: 0,
     };
   }
 
@@ -75,6 +76,16 @@ class SplitterLayout extends React.Component {
   }
 
   componentDidUpdate(prevProps, prevState) {
+    //Secondary div gets assigned a space of zero
+    //Previous width saved under 'savedSize' to revert to when editMode is exited
+    if (!prevProps.editMode && this.props.editMode) {
+      this.setState({ savedSize: this.state.secondaryPaneSize });
+      this.setState({ secondaryPaneSize: 0 });
+    }
+    if (prevProps.editMode && !this.props.editMode && this.state.secondaryPaneSize === 0) {
+      this.setState({ secondaryPaneSize: this.state.savedSize });
+    }
+
     if (
       prevState.secondaryPaneSize !== this.state.secondaryPaneSize &&
       this.props.onSecondaryPaneSizeChange
@@ -201,7 +212,10 @@ class SplitterLayout extends React.Component {
 
   handleSplitterMouseDown() {
     clearSelection();
-    this.setState({ resizing: true });
+    //Making resize not possible in editMode
+    if (!this.props.editMode) {
+      this.setState({ resizing: true });
+    }
   }
 
   handleMouseUp() {
@@ -287,6 +301,7 @@ SplitterLayout.propTypes = {
   onDragEnd: PropTypes.func,
   onSecondaryPaneSizeChange: PropTypes.func,
   children: PropTypes.arrayOf(PropTypes.node),
+  editMode: Boolean,
 };
 
 SplitterLayout.defaultProps = {
@@ -301,6 +316,7 @@ SplitterLayout.defaultProps = {
   onDragEnd: null,
   onSecondaryPaneSizeChange: null,
   children: [],
+  editMode: false,
 };
 
 export default SplitterLayout;
